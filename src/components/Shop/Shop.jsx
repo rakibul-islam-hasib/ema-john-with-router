@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import Card from '../Card/Card';
 import Cart from '../Cart/Cart';
-import { addToDb, getShoppingCart } from '../Utilities/fakedb';
+import { addToDb, deleteShoppingCart, getShoppingCart } from '../Utilities/fakedb';
 
 const Shop = () => {
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
-    console.log(cart , 'cart')
+    // console.log(cart , 'cart')
     useEffect(() => {
         fetch('products.json')
             .then(res => res.json())
             .then(data => setProducts(data))
     }, []);
-
+    const handelClearCart = () => {
+        deleteShoppingCart();
+        setCart([]); 
+        console.log('hjh')
+    }
     useEffect(() => {
         const storedDB = getShoppingCart();
         // console.log(storedDB)
@@ -28,7 +32,7 @@ const Shop = () => {
                 storedCart.push(savedProduct);
             }
         }
-        setCart(storedCart) ; 
+        setCart(storedCart);
         // console.log(storedCart)
 
     }, [products]);
@@ -48,7 +52,7 @@ const Shop = () => {
                     }
                 </div>
                 <div className="col-span-1">
-                    <Cart cart={cart}></Cart>
+                    <Cart handelClearCart={handelClearCart} cart={cart}></Cart>
                 </div>
             </div>
         </div>
